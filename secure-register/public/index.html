@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kayıt Ol</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0d0e22, #1a142e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #d4d4e7;
+  }
+  .container {
+    background: linear-gradient(145deg, #12152f, #1f1a3d);
+    padding: 36px 44px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(25, 22, 50, 0.85);
+    width: 360px;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 23px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #b3b7d6;
+  }
+  input {
+    width: 100%;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    background: #1c1f3a;
+    color: #d4d4e7;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  input::placeholder {
+    color: #7c7e9f;
+    font-weight: 500;
+  }
+  input:focus {
+    outline: none;
+    background: #252942;
+    box-shadow: 0 0 8px 2px #6e6db3;
+  }
+  input.error {
+    border: 2px solid red !important;
+    box-shadow: none !important;
+  }
+  button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 28px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(90deg, #3b3a72, #51487a);
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    box-shadow: 0 5px 15px rgba(94, 88, 122, 0.7);
+  }
+  button:hover {
+    transform: scale(1.07);
+    box-shadow: 0 12px 30px rgba(94, 88, 122, 1);
+  }
+  .form-error {
+    color: #ff5555;
+    font-weight: 700;
+    margin-bottom: 14px;
+    border: 1px solid #ff5555;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #330000;
+    text-align: center;
+    display: none;
+  }
+  .help-text {
+    font-size: 13px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    color: #8a8db1;
+    font-weight: 500;
+  }
+  .password-requirements {
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+    padding-left: 12px;
+    color: #7c7e9f;
+    line-height: 1.5;
+    user-select: none;
+  }
+  .password-requirements span {
+    display: block;
+    margin-bottom: 6px;
+    position: relative;
+    padding-left: 20px;
+    transition: color 0.3s ease;
+  }
+  .password-requirements span::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #7c7e9f;
+    font-weight: bold;
+    font-size: 18px;
+    top: 0;
+    line-height: 1;
+    transition: color 0.3s ease;
+  }
+  .password-requirements .valid {
+    color: #57e32a;
+  }
+  .password-requirements .valid::before {
+    color: #57e32a;
+  }
+  .highlight {
+    transition: color 0.3s ease;
+  }
+  .highlight.valid {
+    color: #57e32a;
+    font-weight: 700;
+  }
+  /* Eğer tüm cümle valid ise tüm span yeşil */
+  .password-requirements .all-valid {
+    color: #57e32a !important;
+  }
+  .password-requirements .all-valid::before {
+    color: #57e32a !important;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <form id="registerForm" novalidate>
+      <div id="formError" class="form-error"></div>
+      <h2>Kayıt Ol</h2>
+
+      <input type="text" id="username" placeholder="Kullanıcı Adı" />
+      <input type="email" id="email" placeholder="E-posta" />
+      <input type="password" id="password" placeholder="Şifre" />
+      
+      <div class="password-requirements" id="passwordRequirements">
+        <span id="lengthReq">Şifreniz en az <strong>8 karakterli</strong> olmalıdır!</span>
+        <span id="numberReq">Şifrenizde en az bir adet <strong>rakam</strong> bulunmalıdır!</span>
+        <span id="caseReq">
+          Şifrenizde en az 
+          <span id="upperReq" class="highlight">1 büyük</span> ve 
+          <span id="lowerReq" class="highlight">1 küçük</span> harf olmalıdır!
+        </span>
+      </div>
+      
+      <input type="password" id="confirmPassword" placeholder="Şifreyi Onayla" />
+      <div id="passwordHelp" class="help-text"></div>
+      <div id="confirmPasswordHelp" class="help-text"></div>
+      <button type="submit" id="submitBtn">Kayıt Ol</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const formError = document.getElementById('formError');
+    const emailInput = document.getElementById('email');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const passwordHelp = document.getElementById('passwordHelp');
+    const confirmPasswordHelp = document.getElementById('confirmPasswordHelp');
+
+    const lengthReq = document.getElementById('lengthReq');
+    const numberReq = document.getElementById('numberReq');
+    const caseReq = document.getElementById('caseReq');
+    const upperReq = document.getElementById('upperReq');
+    const lowerReq = document.getElementById('lowerReq');
+
+    const validDomains = ["gmail.com", "hotmail.com", "yahoo.com", "outlook.com"];
+
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+      if (!re.test(email)) return false;
+      const atIndex = email.indexOf("@");
+      if (atIndex === -1) return false;
+      const domain = email.substring(atIndex + 1).toLowerCase();
+      return validDomains.includes(domain);
+    }
+
+    function isValidUsername(username) {
+      const re = /^[a-zA-Z0-9]{4,}$/;
+      return re.test(username);
+    }
+
+    function validatePassword(password) {
+      const errors = [];
+      if (password.length < 8) errors.push("length");
+      if (!/\d/.test(password)) errors.push("number");
+      if (!/[A-Z]/.test(password)) errors.push("upper");
+      if (!/[a-z]/.test(password)) errors.push("lower");
+      return errors;
+    }
+
+    function validateConfirmPassword(password, confirmPassword) {
+      if (password !== confirmPassword) return "Şifreler eşleşmiyor.";
+      return "";
+    }
+
+    function updatePasswordRequirements(password) {
+      // Uzunluk
+      if (password.length >= 8) {
+        lengthReq.classList.add("valid");
+      } else {
+        lengthReq.classList.remove("valid");
+      }
+      // Rakam
+      if (/\d/.test(password)) {
+        numberReq.classList.add("valid");
+      } else {
+        numberReq.classList.remove("valid");
+      }
+      // Büyük harf
+      const hasUpper = /[A-Z]/.test(password);
+      if (hasUpper) {
+        upperReq.classList.add("valid");
+      } else {
+        upperReq.classList.remove("valid");
+      }
+      // Küçük harf
+      const hasLower = /[a-z]/.test(password);
+      if (hasLower) {
+        lowerReq.classList.add("valid");
+      } else {
+        lowerReq.classList.remove("valid");
+      }
+
+      // Eğer hem büyük hem küçük var ise caseReq span tamamıyla yeşil olur
+      if (hasUpper && hasLower) {
+        caseReq.classList.add("all-valid");
+        upperReq.classList.add("valid");
+        lowerReq.classList.add("valid");
+      } else {
+        caseReq.classList.remove("all-valid");
+        // Büyük ve küçük ayrı ayrı renkli kalacak zaten yukarıda hallediliyor
+      }
+    }
+
+    function validateForm() {
+      let hasError = false;
+
+      // E-posta kontrolü
+      if (!isValidEmail(emailInput.value.trim())) {
+        emailInput.classList.add("error");
+        hasError = true;
+      } else {
+        emailInput.classList.remove("error");
+      }
+
+      // Kullanıcı adı kontrolü
+      if (!isValidUsername(usernameInput.value.trim())) {
+        usernameInput.classList.add("error");
+        hasError = true;
+      } else {
+        usernameInput.classList.remove("error");
+      }
+
+      // Şifre kontrolü
+      const passwordErrors = validatePassword(passwordInput.value);
+      if (passwordErrors.length > 0) {
+        passwordInput.classList.add("error");
+        passwordHelp.textContent = "Şifre gereksinimleri karşılanmıyor.";
+        hasError = true;
+      } else {
+        passwordInput.classList.remove("error");
+        passwordHelp.textContent = "";
+      }
+
+      // Şifre onayı kontrolü
+      const confirmMsg = validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
+      if (confirmMsg) {
+        confirmPasswordInput.classList.add("error");
+        confirmPasswordHelp.textContent = confirmMsg;
+        hasError = true;
+      } else {
+        confirmPasswordInput.classList.remove("error");
+        confirmPasswordHelp.textContent = "";
+      }
+
+      if (hasError) {
+        formError.textContent = "Lütfen gerekli alanları doldurunuz!";
+        formError.style.display = "block";
+      } else {
+        formError.style.display = "none";
+      }
+
+      return !hasError;
+    }
+
+    // Anlık e-posta domain kontrolü
+    emailInput.addEventListener('input', () => {
+      const email = emailInput.value.trim();
+      const atIndex = email.indexOf('@');
+
+      if (atIndex === -1) {
+        emailInput.classList.remove('error');
+        formError.style.display = "none";
+        return;
+      }
+
+      const domainPart = email.substring(atIndex + 1).toLowerCase();
+
+      if (domainPart.length === 0) {
+        emailInput.classList.remove('error');
+        formError.style.display = "none";
+        return;
+      }
+
+      if (!domainPart.includes('.')) {
+        emailInput.classList.remove('error');
+        formError.style.display = "none";
+        return;
+      }
+
+      if (validDomains.includes(domainPart)) {
+        emailInput.classList.remove('error');
+      } else {
+        emailInput.classList.add('error');
+      }
+      formError.style.display = "none";
+    });
+
+    // Anlık şifre kontrolü ve gereksinimlerin güncellenmesi
+    passwordInput.addEventListener('input', () => {
+      updatePasswordRequirements(passwordInput.value);
+      passwordHelp.textContent = "";
+      formError.style.display = "none";
+
+      if (passwordInput.value.trim() === "") {
+        passwordInput.classList.remove("error");
+      }
+    });
+
+    // Onay şifre anlık kontrolü
+    confirmPasswordInput.addEventListener('input', () => {
+      confirmPasswordHelp.textContent = "";
+      formError.style.display = "none";
+
+      if (confirmPasswordInput.value.trim() === "") {
+        confirmPasswordInput.classList.remove("error");
+      }
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      if (validateForm()) {
+        alert("Kayıt başarılı!");
+        form.reset();
+        passwordHelp.textContent = "";
+        confirmPasswordHelp.textContent = "";
+        updatePasswordRequirements("");
+      }
+    });
+  </script>
+</body>
+</html>
