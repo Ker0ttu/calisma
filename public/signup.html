@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol | Premium Design</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <div class="container">
+        <form id="registerForm" novalidate>
+            <h2 class="glow-text">Kayıt Ol</h2>
+            <div id="formError" class="form-error"></div>
+
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Kullanıcı Adı" autocomplete="off">
+                <small id="usernameHint" class="input-hint"></small>
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="email" placeholder="E-posta (@gmail.com)" autocomplete="off">
+                <small id="emailHint" class="input-hint"></small>
+            </div>
+
+            <div class="input-group password-wrapper">
+                <input type="password" id="password" placeholder="Şifre" autocomplete="off">
+                <span class="toggle-password" data-target="password">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+            </div>
+
+            <div class="password-requirements">
+                <div id="lengthReq" class="req-line">
+                    <span class="req-dot"></span>
+                    <p>Şifrenizde en az <strong>8 karakter</strong> bulunmalıdır!</p>
+                </div>
+                <div id="numberReq" class="req-line">
+                    <span class="req-dot"></span>
+                    <p>Şifrenizde en az <strong>1 rakam</strong> bulunmalıdır!</p>
+                </div>
+                <div id="caseReq" class="req-line">
+                    <span class="req-dot"></span>
+                    <p>Şifrenizde en az <strong id="upperReq" class="highlight">1 büyük</strong> ve <strong id="lowerReq" class="highlight">1 küçük</strong> harf olmalıdır!</p>
+                </div>
+            </div>
+
+            <div class="input-group password-wrapper">
+                <input type="password" id="confirmPassword" placeholder="Şifreyi Onayla" autocomplete="off">
+                <span class="toggle-password" data-target="confirmPassword">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+            </div>
+
+            <div id="captchaWrapper" class="captcha-wrapper">
+                <div class="g-recaptcha" data-sitekey="6Ld66jQsAAAAAMvP6yLUZtVL5vS1iE38_CU2aR8c"></div>
+            </div>
+
+            <button type="submit" class="glow-button">Kayıt Ol</button>
+
+            <div class="footer-link">
+                Zaten hesabın var mı? <a href="login.html">Giriş Yap</a>
+            </div>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

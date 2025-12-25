@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap | Premium Design</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <form id="loginForm" novalidate>
+            <h2 class="glow-text">Giriş Yap</h2>
+            <div id="loginError" class="form-error"></div>
+
+            <div class="input-group">
+                <input type="text" id="loginUser" placeholder="Kullanıcı Adı veya E-posta" autocomplete="off">
+            </div>
+
+            <div class="input-group password-wrapper">
+                <input type="password" id="loginPass" placeholder="Şifre" autocomplete="off">
+                <span class="toggle-password" data-target="loginPass">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+            </div>
+
+            <button type="submit" class="glow-button">Giriş Yap</button>
+
+            <div class="footer-link">
+                Hesabın yok mu? <a href="signup.html">Kayıt Ol</a>
+            </div>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
