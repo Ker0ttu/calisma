@@ -1,0 +1,14 @@
+.highlight {
+  color: #7c7e9f; /* gri-mor başlangıç */
+  transition: color 0.3s ease;
+}
+
+.highlight.valid {
+  color: #57e32a; /* yeşil */
+  font-weight: 700;
+}
+
+.password-requirements.all-valid {
+  color: #57e32a !important; /* tüm cümleyi yeşile çevir */
+  font-weight: 700;
+}

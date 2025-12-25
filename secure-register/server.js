@@ -2,15 +2,24 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const path = require("path");
-
 const app = express();
 const PORT = 3000;
-
+const PUBLIC_PATH = path.join(__dirname, "../public");
+console.log("Public path:", PUBLIC_PATH);
 // Google reCAPTCHA secret key buraya yazılacak
 const SECRET_KEY = "6Ld66jQsAAAAAFTGeiT1BrI7PMzLcsrr2tcoRvK4";
 
-app.use(express.static(path.join(__dirname, "../public")));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(PUBLIC_PATH));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(PUBLIC_PATH, "index.html"));
+});
+
+
+// Ana sayfa rotası
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
 app.post("/register", async (req, res) => {
   const { email, password, "g-recaptcha-response": token } = req.body;
@@ -39,3 +48,7 @@ app.post("/register", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Sunucu ${PORT} portunda çalışıyor.`);
 });
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
+console.log("Public path:", path.join(__dirname, "../public"));
