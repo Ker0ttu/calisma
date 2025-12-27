@@ -2,8 +2,16 @@
 
 body { 
     height: 100vh; font-family: 'Inter', sans-serif; 
-    background: #0d0e22; display: flex; justify-content: center; 
-    align-items: center; color: #d4d4e7; 
+    background: linear-gradient(-45deg, #0d0e22, #1c1f3a, #0d0e22, #23274a);
+    background-size: 400% 400%;
+    animation: gradientAnimation 12s ease infinite;
+    display: flex; justify-content: center; align-items: center; color: #d4d4e7; 
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .container { 
@@ -19,26 +27,27 @@ h2.glow-text {
 }
 
 .input-group { margin-bottom: 16px; position: relative; }
-.password-wrapper { display: flex; align-items: center; }
+.password-wrapper { display: flex; align-items: center; position: relative; }
 
 input { 
     width: 100%; padding: 14px; border-radius: 12px; border: 2px solid transparent; 
     background: #1c1f3a; color: #fff; font-size: 15px; outline: none; transition: 0.3s;
 }
 
-.password-wrapper input { padding-right: 45px; }
 input:focus { border-color: rgba(255, 255, 255, 0.2); }
-input.error-border { border-color: #ff5555 !important; box-shadow: 0 0 8px rgba(255, 85, 85, 0.3); }
+input.error-border { border-color: #ff5555 !important; box-shadow: 0 0 8px rgba(255, 85, 85, 0.2); }
 
+/* GÖZ İKONLARI VE PARLAMA EFEKTİ */
 .toggle-password {
-    position: absolute; right: 15px; cursor: pointer; color: #5c5e7e;
-    display: flex; align-items: center; transition: 0.3s;
+    position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+    cursor: pointer; color: #5c5e7e; z-index: 10; display: flex; align-items: center; transition: 0.3s;
 }
-.toggle-password:hover { color: #ffffff; }
-.toggle-password svg { width: 20px; height: 20px; }
-.toggle-password.active { color: #57e32a; }
+.toggle-password:hover { 
+    color: #ffffff; 
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6)); /* Parlama burası */
+}
+.toggle-password.active { color: #57e32a; filter: drop-shadow(0 0 5px rgba(87, 227, 42, 0.6)); }
 
-.input-hint { color: #ff5555; font-size: 11px; display: block; margin-top: 5px; font-weight: 500; }
 .password-requirements { margin-bottom: 22px; margin-top: 5px; }
 .req-line { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 13.5px; color: #5c5e7e; transition: 0.3s; }
 .req-dot { width: 6px; height: 6px; background-color: #4e4896; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
@@ -47,8 +56,8 @@ input.error-border { border-color: #ff5555 !important; box-shadow: 0 0 8px rgba(
 .valid-line .req-dot { background-color: #57e32a; box-shadow: 0 0 8px rgba(87, 227, 42, 0.6); }
 .valid-text { color: #57e32a !important; }
 
-.captcha-wrapper { display: flex; justify-content: center; margin-bottom: 22px; padding: 5px; border-radius: 4px; transition: 0.3s; }
-.captcha-error { border: 1px solid #ff5555; background: rgba(255, 85, 85, 0.05); }
+.input-hint { color: #ff5555; font-size: 11px; display: block; margin-top: 5px; font-weight: 500; }
+.captcha-container { display: flex; justify-content: center; margin-bottom: 20px; }
 
 .glow-button { 
     width: 100%; padding: 16px; border-radius: 14px; border: none; 
@@ -57,8 +66,7 @@ input.error-border { border-color: #ff5555 !important; box-shadow: 0 0 8px rgba(
 }
 
 .footer-link { text-align: center; margin-top: 20px; font-size: 14px; color: #5c5e7e; }
-.footer-link a { color: #57e32a; text-decoration: none; font-weight: 600; transition: 0.3s; }
-.footer-link a:hover { color: #ffffff; text-shadow: 0 0 8px rgba(87, 227, 42, 0.6); }
+.footer-link a { color: #57e32a; text-decoration: none; font-weight: 600; }
 
 .form-error { 
     background: rgba(255, 85, 85, 0.1); color: #ff5555; padding: 12px; 
