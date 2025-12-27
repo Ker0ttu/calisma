@@ -1,4 +1,4 @@
-// 1. Şifre Göster/Gizle (Dokunulmadı)
+// 1. Şifre Göster/Gizle (Orijinal Kodun)
 document.querySelectorAll('.toggle-password').forEach(button => {
     button.addEventListener('click', function() {
         const targetId = this.getAttribute('data-target');
@@ -13,7 +13,28 @@ document.querySelectorAll('.toggle-password').forEach(button => {
     });
 });
 
-// 2. Kayıt Sayfası Mantığı (Dokunulmadı)
+/**
+ * Mevcut yapıyı bozmadan eklenen Başarı Animasyonu Fonksiyonu
+ */
+function showSuccessAnimation(message, redirectUrl) {
+    const successAnim = document.getElementById("successAnim");
+    const successText = document.getElementById("successText");
+    const activeForm = document.querySelector('form:not([style*="display: none"])') || document.querySelector('form');
+
+    if (activeForm) activeForm.style.display = "none";
+    if (successAnim) {
+        if (successText) successText.textContent = message;
+        successAnim.style.display = "block";
+        setTimeout(() => {
+            window.location.href = redirectUrl;
+        }, 1600);
+    } else {
+        // Eğer HTML'de animasyon div'i yoksa direkt yönlendir
+        window.location.href = redirectUrl;
+    }
+}
+
+// 2. Kayıt Sayfası Mantığı
 const registerForm = document.getElementById("registerForm");
 if (registerForm) {
     const uInput = document.getElementById("username"), eInput = document.getElementById("email"),
@@ -22,12 +43,31 @@ if (registerForm) {
 
     pInput.addEventListener("input", () => {
         const val = pInput.value;
-        const hasUpper = /[A-Z]/.test(val); const hasLower = /[a-z]/.test(val); const hasNumber = /\d/.test(val);
+        const hasUpper = /[A-Z]/.test(val); 
+        const hasLower = /[a-z]/.test(val); 
+        const hasNumber = /\d/.test(val);
+
         document.getElementById("lengthReq").classList.toggle("valid-line", val.length >= 8);
         document.getElementById("numberReq").classList.toggle("valid-line", hasNumber);
         document.getElementById("upperReq").classList.toggle("valid-text", hasUpper);
         document.getElementById("lowerReq").classList.toggle("valid-text", hasLower);
         document.getElementById("caseReq").classList.toggle("valid-line", hasUpper && hasLower);
+        
+        let strength = 0;
+        if (val.length >= 8) strength += 25;
+        if (hasNumber) strength += 25;
+        if (hasUpper) strength += 25;
+        if (hasLower) strength += 25;
+
+        const sBar = document.getElementById("strengthBar");
+        if (sBar) {
+            sBar.style.width = strength + "%";
+            if (strength <= 25) sBar.style.backgroundColor = "#ff5555";
+            else if (strength <= 50) sBar.style.backgroundColor = "#ffb86c";
+            else if (strength <= 75) sBar.style.backgroundColor = "#f1fa8c";
+            else sBar.style.backgroundColor = "#57e32a";
+        }
+
         checkConfirmMatch();
     });
 
@@ -51,6 +91,11 @@ if (registerForm) {
 
     registerForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+        if (pInput.value !== cpInput.value) {
+            fError.textContent = "Şifreler birbiriyle uyuşmuyor!";
+            fError.style.display = "block";
+            return;
+        }
         fError.style.display = "none";
         const captchaToken = grecaptcha.getResponse();
 
@@ -68,13 +113,14 @@ if (registerForm) {
             const data = await res.json();
             if (data.success) {
                 localStorage.setItem("pendingEmail", eInput.value); 
-                window.location.href = "verify.html";
+                // Yönlendirme yerine animasyonu çağırıyoruz
+                showSuccessAnimation("Kayıt Başarılı! Doğrulanıyor...", "verify.html");
             } else { fError.textContent = data.message; fError.style.display = "block"; }
         } catch (err) { fError.textContent = "Bağlantı hatası!"; fError.style.display = "block"; }
     });
 }
 
-// 3. Giriş Sayfası Mantığı (Yeni Eklendi)
+// 3. Giriş Sayfası Mantığı (Orijinal Korundu)
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
@@ -91,7 +137,8 @@ if (loginForm) {
             });
             const data = await res.json();
             if (data.success) { 
-                window.location.href = "dashboard.html"; 
+                // Yönlendirme yerine animasyonu çağırıyoruz
+                showSuccessAnimation("Giriş Başarılı! Hoş Geldiniz.", "dashboard.html");
             } else { 
                 lError.textContent = data.message; 
                 lError.style.display = "block"; 
@@ -103,15 +150,13 @@ if (loginForm) {
     });
 }
 
-// 4. Doğrulama Sayfası Mantığı (Yeni Eklendi)
+// 4. Doğrulama Sayfası Mantığı (Orijinal Korundu)
 const verifyForm = document.getElementById("verifyForm");
 if (verifyForm) {
     verifyForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const code = document.getElementById("verifyCode").value;
         const vError = document.getElementById("verifyError");
-        
-        // Kayıt sırasında kaydedilen e-postayı al
         const email = localStorage.getItem("pendingEmail");
 
         try {
@@ -122,8 +167,8 @@ if (verifyForm) {
             });
             const data = await res.json();
             if (data.success) {
-                alert("Hesabınız başarıyla doğrulandı!");
-                window.location.href = "login.html";
+                // Alert yerine animasyonu çağırıyoruz
+                showSuccessAnimation("Hesabınız Doğrulandı!", "login.html");
             } else {
                 vError.textContent = data.message;
                 vError.style.display = "block";

@@ -3,13 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kayıt Ol | Premium Design</title>
+    <title>Premium Design | Auth</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <div class="container">
+        <div id="successAnim" class="success-animation" style="display: none;">
+            <div class="checkmark-wrapper">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+            <p id="successText" class="success-text">İşlem Başarılı!</p>
+        </div>
+
         <form id="registerForm" novalidate>
             <h2 class="glow-text">Kayıt Ol</h2>
             <div id="formError" class="form-error"></div>
@@ -28,6 +38,10 @@
                 <span class="toggle-password" data-target="password">
                     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </span>
+            </div>
+
+            <div class="strength-meter">
+                <div id="strengthBar" class="strength-bar"></div>
             </div>
 
             <div class="password-requirements">
